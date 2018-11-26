@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        {% if msgs%}
+            {% for msg in msgs%}
+                <font color='red'>{{msg}}</font>
+            {%end%}
+        {%end %}
+        <form id="loginForm" name="loginForm" action="/{{url_partition}}/admin/login/" method="POST">
+            <table border="0">
+                <tr>
+                    <td>
+                        帐号：
+                    </td>
+                    <td>
+                        <input type="text" id="username" name="username" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        密码：
+                    </td>
+                    <td>
+                        <input type="password" id="password" name="password">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input id="submit" name="submit" type="submit" value="登录" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

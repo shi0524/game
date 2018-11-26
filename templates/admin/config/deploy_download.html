@@ -1,0 +1,19 @@
+<html>
+<body>
+<h3>配置列表（只显示最新3版）：</h3>
+<table border="1">
+    <tbody>
+        <tr>
+            <th>配置名称</th>
+            <th>下载</th>
+        </tr>
+        {% for name in file_name %}
+        <tr>
+            <th>{{name}}</th>
+            <th><a href="/{{url_partition}}/admin/config/deploy_download/?name={{name}}">下载配置</a></th>
+        </tr>
+        {% end %}
+    </tbody>
+</table>
+</body>
+</html>

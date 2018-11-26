@@ -1,0 +1,148 @@
+{% extends "../user_info_base.html"%}
+{% block content1 %}
+<body>
+<div>
+<form action="/{{url_partition}}/admin/user/select/" method="post">
+    输入用户id: <input type="text" id="uid" name="uid", value="{{uid}}">
+    <input name="submit" type="submit" value="提交" />
+</form>
+</div>
+<hr>
+{% if msg %}
+<div style="color: red">{{msg}}</div>
+{% end %}
+
+{% if user %}
+
+<h3> 单个帐号转移 </h3>
+<div id="uid_export">
+    <form action="/{{url_partition}}/admin/user/export/" method="get" accept-charset="utf-8">
+        <input type="hidden" name="export_uid" value="{{uid}}">
+        <input type="submit" value="导出数据"/></p>
+    </form>
+</div>
+
+<div id="uid_inject">
+    <form action="/{{url_partition}}/admin/user/inject/" method="post" enctype="multipart/form-data">
+        <p>目标用户uid: <input type="text" name="inject_uid" value="{{uid}}"/>
+        <input type="hidden" name="uid" value="{{uid}}"/>
+        <p>待导入文件: <input type="file" name="user_file"/></p>
+        <input type="submit" value="注入数据"/>
+    </form>
+</div>
+<form action="/{{url_partition}}/admin/user/ban_user">
+    <input type="hidden" name="user_id" value="{{user.uid}}"><br/>
+    封号:   <input type="text" name="is_ban" size="4" value="{{user.is_ban}}"/>（0：未封号；1：已封号）<br>
+    过期时间:<input type="text" name="ban_expire" size="8" value="{{user.ban_expire if user.ban_expire else 0}}"/>（0：永久封号；其它：过期时间戳）<br>
+    封号理由:<input type="text" name="ban_reason" size="50" value="{{user.ban_reason}}"/>
+    <input type="submit" value="修改" onclick="javascript:return confirm('确认封号么?')">
+</form>
+<hr>
+{% end %}
+{% end %}
+
+{% block content %}
+{% if user %}
+
+<form action="/{{url_partition}}/admin/user/update/" method="post">
+<input type="hidden" name="uid" value="{{uid}}">
+<table border="1" cellspacing="0" cellpadding="1" width="100%;">
+    <tr>
+        <th align="left">用户等级(level)</th>
+        <td><input style="border-style:none; width:100%" name="level" type="text" value="{{user.level}}" /></td>
+        <th align="left">用户名字(name)</th>
+        <td><input style="border-style:none; width:100%" name="name" type="text" value="{{user.name}}" /></td>
+        <th align="left">钻石(diamond)</th>
+        <td><input style="border-style:none; width:100%" name="diamond" type="text" value="{{user.diamond}}" /></td>
+    </tr>
+    <tr><td colspan="10"><input name="submit" type="submit" value="修改" /></td></tr>
+</table>
+</form>
+<form action="/{{url_partition}}/admin/user/reset_guide/" method="post">
+<input type="hidden" name="uid", value="{{uid}}">
+<table>
+    <tr>
+        <th width="160px;" align="left">sort: <input name="sort" type="text" value="" /></th>
+        <th width="160px;" align="left">guide_id: <input name="key" type="text" value="" /></th>
+    </tr>
+    <tr>
+        <td><input name="submit" type="submit" value="重置新手引导" /></td>
+    </tr>
+</table>
+</form>
+<form action="/{{url_partition}}/admin/user/finish_all_guide/" method="post">
+    <input type="hidden" name="uid", value="{{uid}}">
+    <input name="submit" type="submit" value="跳过新手引导" />
+</form>
+
+<form action="/{{url_partition}}/admin/user/reset_mission_main/" method="post">
+<input type="hidden" name="uid" value="{{uid}}">
+<table>
+    <tr>
+        <th>task_id(如：2001): <input name="task_id" type="text" value="" /></th> <th ><input name="submit" type="submit" value="重置主线任务" /></th>
+    </tr>
+</table>
+</form>
+
+
+<form action="/{{url_partition}}/admin/user/reset_mission_side/" method="post">
+<input type="hidden" name="uid" value="{{uid}}">
+<table>
+    <tr>
+        <th>task_ids(如：3001,4001): <input name="task_ids" type="text" value="" /></th> <th ><input name="submit" type="submit" value="重置支线任务" /></th>
+    </tr>
+</table>
+</form>
+
+<hr>
+<table>
+    <tr>
+        <td>
+            <form action="/{{url_partition}}/admin/payment/pay_person/" method="post">
+                <input type="hidden" name="user_id" value="{{mm.user.uid}}" />
+                <input type="submit" value="充值记录" />
+            </form>
+        </td>
+        <td>
+            <form action="/{{url_partition}}/admin/user/spend_person/" method="post">
+                <input type="hidden" name="user_id" value="{{mm.user.uid}}" />
+                <input type="submit" value="消费记录" />
+            </form>
+        </td>
+        <td>
+            <form action="/{{url_partition}}/admin/user/earn_log/" method="post">
+                <input type="hidden" name="user_id" value="{{mm.user.uid}}" />
+                <input type="submit" value="获得钻石记录" />
+            </form>
+        </td>
+        <td>
+            <form action="/{{url_partition}}/admin/user/user_logging/" method="post">
+                <input type="hidden" name="user_id" value="{{mm.user.uid}}" />
+                <input type="submit" value="动作记录" />
+            </form>
+        </td>
+        <td>
+            <form action="/{{url_partition}}/admin/user/diamond_log/" method="post">
+                <input type="hidden" name="user_id" value="{{mm.user.uid}}" />
+                <input type="submit" value="钻石记录" />
+            </form>
+        </td>
+    </tr>
+</table>
+
+<div id="user_reset">
+    <hr/>
+    {% for i in sorted(mm._register_base.keys()) %}
+        {% if i in ignore_reset_module %}
+        {% continue %}
+        {% end %}
+        <form action="/{{url_partition}}/admin/user/reset_module/" method="post">
+        <input type="hidden" name="uid" value="{{uid}}">
+        <input type="hidden" name="reset_module" value="{{i}}">
+        {{ i }}: <input type="submit" value="reset" onclick="javascript:return confirm('后果很严重，继续？')"/>
+        </form>
+    {% end %}
+</div>
+{% end %}
+{% end %}
+</body>

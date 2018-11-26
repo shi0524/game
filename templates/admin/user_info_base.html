@@ -1,0 +1,30 @@
+<body>
+{% import time %}
+{% import settings %}
+{% from gconfig import game_config %}
+{% from scripts.ips.ips import get_ip_addr %}
+
+<input type="button" value="返回" onclick="javascript:history.go(-1)"/>
+{% block content1 %}
+{% end %}
+    {% if mm %}
+        id：{{mm.user.uid}}&nbsp;<br/>
+        账号：{{mm.user.account}}&nbsp;<br/>
+        名字：{{mm.user.name}}<br/>
+        服务器：{{mm.user.father_server_name}}<br/>
+        <br/>
+        注册时间：{{time.strftime('%F %T', time.localtime(mm.user.reg_time))}}&nbsp;<br/>
+        最后活跃：{{time.strftime('%F %T', time.localtime(mm.user.active_time))}}&nbsp;<br/>
+        注册ip：{{mm.user.register_ip}}&nbsp;{{get_ip_addr(mm.user.register_ip)}}<br/>
+    <hr>
+        <table>
+            <tr>
+            </tr>
+        </table>
+    <hr>
+    {% end %}
+<br>
+<hr>
+{% block content %}
+{% end %}
+</body>

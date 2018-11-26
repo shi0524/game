@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% from admin import admin_config %}
+<table border="0">
+    <tr>
+        {% set menu_sort = getattr(admin_config, '%s_sort'%menu, [])%}
+        {% for subname in menu_sort %}
+            {% set subvalue = admin_config.menu_config.get(menu, {}).get(subname, {})%}
+            {% for v in subvalue %}
+                <td><a target='content' href="/{{url_partition}}/admin/{{subname}}/{{v['sub'][0][0]}}">{{v['name']}}</a></td>
+            {% end %}
+        {% end %}
+    </tr>
+</table>
+</body>
+</html>

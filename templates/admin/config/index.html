@@ -1,0 +1,74 @@
+<style>
+.item {width: 175px; padding: 2px; float: left;}
+</style>
+
+<body>
+{% import json %}
+<h3> 配置：</h3>
+
+<hr>
+
+<form action="/{{url_partition}}/admin/config/select">
+    <textarea name="config_refresh_text">{{config_refresh_text}}</textarea><br/>
+    <input type="text" size="5" value="{{config_refresh_flag}}" name="config_refresh_flag"/>
+    <input type="submit" value="提示前端更新配置" onclick="return confirm('确定更新')"/>ps:0 不更新；1 更新
+</form>
+
+<form action="/{{url_partition}}/admin/config/select/">
+    <input type="text" size="5" value="{{test_res_version_flag}}" name="test_res_version_flag"/>
+    <input type="submit" value="是否热更测试" onclick="return confirm('确定测试热更')"/>ps:0 不测试；1 测试
+
+    <input type="text" size="50" value="{{can_hot_update_ip}}" name="white_ip"/>
+    <input type="submit" value="添加可热更ip" onclick="return confirm('确定添加该IP')"/>
+    <input type="text" size="15" value="{{limit_version}}" name="hot_version_limit"/>
+    <input type="submit" value="外网版本限制" onclick="return confirm('确定版本限制')"/>
+    <input type="text" size="15" value="{{recent_version}}">(最新版本号)
+</form>
+
+<hr>
+
+<form action="/{{url_partition}}/admin/config/refresh/">
+    <input type="submit" value="更新配置" onclick="return confirm('确定更新')"/>
+</form>
+<hr>
+
+<form action="/{{url_partition}}/admin/config/upload/" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <legend>上传文件</legend>
+        <input type="file" name="xls" />
+        <input type="submit" value="上传" onclick="return confirm('确定上传?')"/>
+    </fieldset>
+</form>
+
+<span style='color: red'>{{msg}}</span>
+
+<div style="float: left; width: 45%; overflow:auto;">
+    {% for config, value in sorted(mapping_config.iteritems()) %}
+        <div class="item"><a href="/{{url_partition}}/admin/config/select/?config_key={{config}}&">{{ value[0] if value[0] else config }}</a></div>
+    {% end %}
+</div>
+
+<div>
+    <br/>
+    {{config_key}} 上次修改时间<{{last_update_time}}>
+    -- size: {{round(len(json.dumps(config_data, separators=(',', ':')))/1024.0, 2)}} K
+    <br/>
+
+    <textarea style="width: 50%; height: 100%">
+        {{json.dumps(config_data, ensure_ascii=False, indent=4, sort_keys=True)}}
+    </textarea><br/>
+    <p>
+        <form action="/{{url_partition}}/admin/config/upload_local_config/" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="back_config" value="1">
+            <fieldset>
+                <legend>上传local_config_back.py配置文件</legend>
+                <input type="file" name="local_config" />
+                <input type="submit" value="上传" onclick="return confirm('确定上传？')"/>
+            </fieldset>
+        </form>
+        <a href="/{{url_partition}}/admin/config/get_all_config/">下载测试用配置</a>
+    </p>
+</div>
+<br/>
+
+</body>
