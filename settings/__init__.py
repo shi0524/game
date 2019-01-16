@@ -34,6 +34,9 @@ MIN_COMPRESS = 50                       # 数据最小压缩大小
 ZIP_COMPRESS_SWITCH = True              # 数据压缩开关
 CONFIG_UPDATE_TIME = 5                  # 配置更新的延迟时间 (单位：秒) 每隔几秒检测一次
 ALL_DB_SERVERS = {}                     # 所有的服
+CELERY_SWITCH = False                   # 异步任务进程开关
+CELERY_CACHE = {}                       # 异步任务
+CW_NUM = 1                              # 任务进程数
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_ROOT = os.path.dirname(CUR_DIR) + os.path.sep
 

@@ -5,6 +5,7 @@ DEBUG = False                           # 是否是 debug 环境
 PLATFORM = 'game_shi'                   # 平台标识
 PRODUCT_NAME = '石头'                    # 平台名
 MAIL_SENDING = False                    # 是否发报错邮件
+CELERY_SWITCH = True                    # 是否异步执行任务
 DECRYPT_BATTLE_DATA = False             # 必须战斗加密
 SESSION_SWITCH = False                  # session 开关
 SESSION_EXPIRED = 86400                 # session 过期时间
@@ -33,6 +34,7 @@ cache_db = {
     'server': 0,        # 区服
     'master': 1,        # master
     'global': 2,        # 全局数据
+    'celery': 3,        # celery 数据
 }
 
 # redis cache 配置
@@ -46,6 +48,7 @@ REDIS_CACHE = {
 
 GLOBAL_CACHE = dict(REDIS_CACHE, db=cache_db['global'])     # 全局数据
 MASTER_CACHE = dict(REDIS_CACHE, db=cache_db['master'])     # master cache
+CELERY_CACHE = dict(REDIS_CACHE, db=cache_db['celery'])     # celery数据
 
 # mysql_setting MYSQL 相关配置
 PAYLOG_HOST = {
