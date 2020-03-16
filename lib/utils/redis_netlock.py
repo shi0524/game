@@ -16,9 +16,8 @@ def acquire_lock(key, client, ex, retry):
     :return:
     """
     while 1:
-        lock = client.setnx(key, 1)
+        lock = client.set(key, 1, ex=ex, nx=True)
         if lock:
-            client.expire(key, ex)
             return True
         else:
             if not retry:
